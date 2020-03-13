@@ -1,6 +1,6 @@
 exports.rdbm = {
     driver: 'sqlite',
-    database: '../../storage/data/database.sqlite',
+    database: 'E:\\workspace\\personal\\demo\\api-server-express\\storage\\data\\database.sqlite',
     host: 'localhost',
     user: 'root',
     password: 'abcd1234',
