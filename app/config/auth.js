@@ -1,5 +1,5 @@
 exports.jwt = {
-    secret: 'oGcB2VNQoPmesPnq0twdg4t5vWelWBbI9IwU38iYDKiEkUpJ33F1KCY6Ebl87ETv',
-    expiry: 60 * 60, //seconds
-    refresh_token_expiry: (60 * 60) + 60 //seconds
+    secret: process.env.JWT_SECRET,
+    expiry: process.env.JWT_TOKEN_EXPIRY ? process.env.JWT_TOKEN_EXPIRY : 3600,
+    refresh_token_expiry: process.env.JWT_TOKEN_REFRESH_EXPIRY ? process.env.JWT_TOKEN_REFRESH_EXPIRY : 3660
 };

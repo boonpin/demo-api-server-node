@@ -1,3 +1,5 @@
+const dotEnv = require('dotenv');
+
 const httpError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -7,6 +9,11 @@ const logger = require('morgan');
 const passport = require('passport');
 const cors = require('cors');
 const helmet = require('helmet');
+
+// read .env
+dotEnv.config();
+
+const appConfig = require('./app/config/app');
 
 const db = require('./app/provider/database');
 db.rdbm.authenticate().then(() => {
@@ -48,5 +55,10 @@ app.use((req, res, next) => {
 
 // error handler
 app.use(require('./app/exceptions/handler'));
+
+
+if (appConfig.debug) {
+    console.warn('WARNING: APP STARTED IN DEBUG MODE');
+}
 
 module.exports = app;

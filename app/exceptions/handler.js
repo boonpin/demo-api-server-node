@@ -1,7 +1,7 @@
-module.exports = function (err, req, res, next) {
-    const isDevMode = req.app.get('env') === 'development';
+const appConfig = require('../config/app');
 
-    if (isDevMode) {
+module.exports = function (err, req, res, next) {
+    if (appConfig.debug) {
         console.error(err);
     } else {
         console.error('Error: ' + err.message);
@@ -13,13 +13,13 @@ module.exports = function (err, req, res, next) {
             message: err.message,
             status: err.status || 500
         };
-        if (isDevMode) {
+        if (appConfig.debug) {
             d.error = err;
         }
         res.send(d);
     } else {
         res.locals.message = err.message;
-        res.locals.error = isDevMode ? err : {};
+        res.locals.error = appConfig.debug ? err : {};
         res.status(err.status || 500);
         res.render('error');
     }
