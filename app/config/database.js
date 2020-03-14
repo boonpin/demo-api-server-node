@@ -6,3 +6,8 @@ exports.rdbm = {
     password: process.env.DB_PASSWORD,
     connectionLimit: 5
 };
+
+exports.mongo = {
+    is_enable: process.env.MONGO_ENABLE && process.env.MONGO_ENABLE.toLowerCase() === 'true',
+    uri: process.env.MONGO_URI
+};

@@ -13,6 +13,8 @@ exports.doLogin = async (req, res, next) => {
     });
 
     if (rs && await bcrypt.compare(req.body.password, rs.password)) {
+        const now = new Date();
+
         const secret = auth.jwt.secret;
         const token = jwt.sign({
             username: rs.username,
@@ -20,11 +22,11 @@ exports.doLogin = async (req, res, next) => {
             email: rs.email,
             contact: rs.contact
         }, secret, {
-            expiresIn: auth.jwt.expiry
+            expiresIn: now.getTime() + auth.jwt.expiry
         });
 
         rs.refresh_token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-        rs.refresh_token_expiry = (new Date()).getTime() + auth.jwt.refresh_token_expiry;
+        rs.refresh_token_expiry = now.getTime() + auth.jwt.refresh_token_expiry;
         rs.save();
 
         return res.status(200).json({

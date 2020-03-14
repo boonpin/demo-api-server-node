@@ -1,4 +1,4 @@
-const dotEnv = require('dotenv');
+require('./bootstrap');
 
 const httpError = require('http-errors');
 const express = require('express');
@@ -10,17 +10,22 @@ const passport = require('passport');
 const cors = require('cors');
 const helmet = require('helmet');
 
-// read .env
-dotEnv.config();
-
 const appConfig = require('./app/config/app');
 
 const db = require('./app/provider/database');
 db.rdbm.authenticate().then(() => {
-    console.log('RDBM Database connection has been established successfully.');
+    console.log('rdbm database connection has been established successfully.');
 }).catch(err => {
-    console.error('Unable to connect to the RDBM database:', err);
+    console.error(`unable to connect to the rdbm database: ${err}`);
 });
+
+if (db.mongo) {
+    db.mongo.connect(() => {
+        console.log('mongo database connection established successfully');
+    }, (err) => {
+        console.error(`MongoDB connection error: ${err}`);
+    });
+}
 
 let app = express();
 
